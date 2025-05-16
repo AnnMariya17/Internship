@@ -8,7 +8,7 @@ const path = require("path");
 const port = 3000;
 
 // Connect to MongoDB
-mongoose.connect("mongodb://localhost:27017/Fullstack", {
+mongoose.connect("mongodb+srv://annmariyakg73:annmariya@cluster0.0frzoyv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => {

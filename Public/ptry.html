@@ -1,0 +1,399 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Projects</title>
+  
+
+  <style>
+        body{
+			background-image: url(bgimg.avif);
+			background-size: cover;
+			background-repeat: no-repeat;
+			background-position: center;
+			height: 100vh;
+			margin: 0;
+		}
+    <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #f0f0f0;
+      display: flex;
+      justify-content: center; /* Center horizontally */
+      align-items: flex-start; /* Start at the top */
+    }
+    .container {
+      margin-top: 100px; /* Lowers it down */
+      text-align: center;
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 5px;
+      font-size: 16px;
+    }
+  </style>
+  
+  <link rel="stylesheet" href="style1.css"/>
+      <link rel="stylesheet" href="style.css">
+</head>
+<body background="bgimg.avif">
+    <nav class="navbar">
+		<div class="navdiv">
+			<div class="logo"><a href="a">Ann </a> </div>
+			<ul>
+				<li><a href="Index.html">Home</a></li>
+				<li><a href="about.html">About</a></li>
+				<li><a href="contact.html">Contact Us</a></li>
+				<li><A href="projects.html">Projects</A></li>
+				<li><a href="service.html">Services</a></li>
+			</ul>
+		</div>
+	</nav>
+
+    <center>
+        <div class="container">
+          <form id="form1">
+    <input type="text" id="name" placeholder="Enter project">
+    <input type="text" id="status" placeholder="enter description">
+            </form>
+    <button onclick="addProject()">Add</button>
+    <ul id="projectList"></ul>
+  </div>
+  
+ </center>
+<script>
+    /*window.onload = function() {
+      const projects = JSON.parse(localStorage.getItem('projects')) || [];
+      projects.forEach(addToDOM);
+    };
+
+    function addProject() {
+      const input = document.getElementById('projectInput');
+      const project = input.value;
+      if (project) {
+        addToDOM(project);
+        saveProject(project);
+        input.value = '';
+      }
+      
+    }
+
+    function addToDOM(project) {
+      const li = document.createElement('li');
+      li.textContent = project;
+      document.getElementById('projectList').appendChild(li);
+    }
+
+    function saveProject(project) {
+      const projects = JSON.parse(localStorage.getItem('projects')) || [];
+      projects.push(project);
+      localStorage.setItem('projects', JSON.stringify(projects));
+    }*/
+    
+</script>
+
+
+
+<script>
+
+ //Form Submission (Handling User Input):
+
+   
+    document.getElementById('form1').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const status = document.getElementById('status').value;
+
+      const response = await fetch('/api/services', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, status })
+      });
+
+      const data = await response.json();
+      alert(data.message || 'Project added!');
+    });
+    
+
+  async function loadProjects() {
+    const res = await fetch('/api/services');
+    const projects = await res.json();
+
+    const list = document.getElementById('projectList');
+    list.innerHTML = '';
+
+    projects.forEach(project => {
+      const item = document.createElement('li');
+      item.textContent = `${project.name} (${project.status})`;
+      list.appendChild(item);
+    });
+  }
+
+  window.onload = loadProjects; // Auto-run when page loads
+
+    
+  </script>
+  
+  <script src="project.js">
+
+  
+  </script>
+</body>
+</html>
+7777
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Projects</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .project {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 300px;
+            text-align: center;
+        }
+        .add-project {
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .add-project input, .add-project button {
+            margin: 5px;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>My Portfolio</h1>
+    <div class="add-project">
+        <input type="text" id="projectTitle" placeholder="Enter Project Title">
+        <input type="text" id="projectDesc" placeholder="Enter Project Description">
+        <button onclick="addProject()">Add Project</button>
+    </div>
+
+    <div class="container" id="projectContainer">
+        <!-- Projects will be loaded dynamically -->
+    </div>
+
+    <script>
+        function addProject() {
+            let title = document.getElementById("projectTitle").value.trim();
+            let desc = document.getElementById("projectDesc").value.trim();
+
+            if (title && desc) {
+                let projects = JSON.parse(localStorage.getItem("projects")) || [];
+
+                // Add ID to project
+                let newProject = {
+                    id: Date.now(),  // unique ID
+                    title,
+                    desc
+                };
+
+                projects.push(newProject);
+                localStorage.setItem("projects", JSON.stringify(projects));
+
+                displayProjects();
+
+                // Clear input fields
+                document.getElementById("projectTitle").value = "";
+                document.getElementById("projectDesc").value = "";
+            } else {
+                alert("Please fill all fields before adding a project.");
+            }
+        }
+
+        function displayProjects() {
+    let container = document.getElementById("projectContainer");
+    container.innerHTML = "";
+
+    let projects = JSON.parse(localStorage.getItem("projects")) || [];
+
+    projects.forEach(project => {
+        let projectDiv = document.createElement("div");
+        projectDiv.classList.add("project");
+
+        let projectTitle = document.createElement("h3");
+        projectTitle.textContent = project.title;
+
+        let projectDesc = document.createElement("p");
+        projectDesc.textContent = project.desc;
+
+        projectDiv.appendChild(projectTitle);
+        projectDiv.appendChild(projectDesc);
+
+        container.appendChild(projectDiv);
+    });
+}
+
+        
+
+        projects.unshift(newProject); // Instead of push
+
+       
+
+        // Load projects when the page loads
+        window.onload = displayProjects;
+    </script>
+
+</body>
+</html>
+hhhhh
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Resume | Ann Mariya</title>
+  <link rel="stylesheet" href="resum2.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Ann Mariya.K.G</h1>
+      <p class="title">Full Stack Developer</p>
+      <p class="contact">
+        <a href="mailto:your.email@example.com">your.email@example.com</a> |
+        <a href="https://github.com/yourusername">GitHub</a> |
+        <a href="https://linkedin.com/in/yourprofile">LinkedIn</a> |
+        <a href="/Your_Name_Resume.pdf" download>Download PDF</a>
+      </p>
+    </header>
+
+    <section>
+      <h2>Professional Summary</h2>
+      <p>Experienced full stack developer with 5+ years of hands-on experience building scalable web applications, RESTful APIs, and interactive user interfaces. Proficient in JavaScript, React, Node.js, TypeScript, and cloud services (AWS/GCP). Passionate about clean code, test-driven development, and open-source contribution.</p>
+    </section>
+
+    <section>
+      <h2>Technical Skills</h2>
+      <ul class="skills">
+        <li><strong>Languages:</strong> JavaScript, TypeScript, Python, Go</li>
+        <li><strong>Frontend:</strong> React, Next.js, Tailwind, SASS</li>
+        <li><strong>Backend:</strong> Node.js, Express, PostgreSQL, MongoDB</li>
+        <li><strong>DevOps:</strong> Docker, GitHub Actions, AWS EC2/S3/Lambda</li>
+        <li><strong>Tools:</strong> Git, VSCode, Jira, Figma, Postman</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Experience</h2>
+
+      <div class="job">
+        <h3>Senior Software Engineer – Acme Corp</h3>
+        <span class="date">2022 – Present</span>
+        <ul>
+          <li>Led development of a microservices-based order processing system, reducing latency by 40%.</li>
+          <li>Built internal tooling with Next.js and Tailwind CSS to improve deployment speed.</li>
+          <li>Mentored junior devs, implemented CI/CD pipelines using GitHub Actions.</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <h3>Frontend Developer – DevStudio</h3>
+        <span class="date">2019 – 2022</span>
+        <ul>
+          <li>Built and maintained React apps with Redux, styled-components, and Jest.</li>
+          <li>Collaborated with UX designers to implement pixel-perfect designs.</li>
+          <li>Contributed to open-source design system used across 5+ company projects.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Education</h2>
+      <p><strong>B.Sc. in Computer Science</strong> – Tech University (2015 – 2019)</p>
+    </section>
+
+    <section>
+      <h2>Certifications</h2>
+      <ul>
+        <li>AWS Certified Developer – Associate</li>
+        <li>JavaScript Algorithms and Data Structures – freeCodeCamp</li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>
+
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f7f9fc;
+  margin: 0;
+  color: #333;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 2rem;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+.title {
+  color: #555;
+  font-size: 1.2rem;
+  margin-top: 0.2rem;
+}
+
+.contact a {
+  color: #007acc;
+  text-decoration: none;
+  margin-right: 1rem;
+  font-size: 0.9rem;
+}
+
+h2 {
+  border-bottom: 2px solid #007acc;
+  padding-bottom: 4px;
+  margin-top: 2rem;
+}
+
+.skills li, .job ul li {
+  margin-bottom: 0.5rem;
+}
+
+.job {
+  margin-bottom: 1.5rem;
+}
+
+.date {
+  font-size: 0.9rem;
+  color: #666;
+}

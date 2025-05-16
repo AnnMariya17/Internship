@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact us</title>
+    <style>
+        body{
+			background-image: url(bgimg.avif);
+			background-size: cover;
+			background-repeat: no-repeat;
+			background-position: center;
+			height: 100vh;
+			margin: 0;
+		}
+    </style>
+</head>
+<body text="white" background="bgimg.avif">
+
+       <nav class="navbar">
+		<div class="navdiv">
+			<div class="logo"><a href="a">Ann </a> </div>
+			<ul>
+				<li><a href="Index.html">Home</a></li>
+				<li><a href="about.html">About</a></li>
+				<li><a href="contact.html">Contact Us</a></li>
+				<li><A href="projects.html">Projects</A></li>
+				<li><a href="service.html">Services</a></li>
+			</ul>
+		</div>
+	</nav>
+
+
+
+    <h1 style="color: rgb(41, 21, 16);"><marquee>CONTACT US</marquee></h1>
+    
+    <fieldset>    
+        <legend style="color: rgb(19, 23, 73);">HIRE US</legend>
+    <form id="form1" style="color: black;">
+        <label>Enter Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <input type="text" placeholder="Enter your name" name="name" required><br>
+        <label>Enter Phone Number&nbsp;</label>
+        <input required name="phone" type="tel" placeholder="Enter 10 digits number" minlength="10" maxlength="10" pattern="\d{10}" ><br>
+        <label>Enter email</label>
+        <input required placeholder="Enter Your email" name="email" type="email"><br>
+        <label>Address</label>
+        <input type="text" placeholder="Enter your address" required><br><br>
+        <input type="submit" >
+        <input type="reset" value="Clear">
+    </form>
+    </fieldset><br><br><br>
+
+    <h2 style="margin-left: 35px;color: rgb(88, 20, 11);">LET US KNOW YOUR EXPERIENCE WITH US</h2>
+    <textarea style="margin-left: 60px;" rows="15" cols="40">Write here.....</textarea>
+    
+    <button style="margin-left: 300px;" type="button" onclick="show()">TRY THIS</button>
+   <script>
+    
+ //Form Submission (Handling User Input):
+
+         
+    document.getElementById('form1').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const status = document.getElementById('status').value;
+
+      const response = await fetch('/api/services', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, status })
+      });
+
+      const data = await response.json();
+      alert(data.message || 'Project added!');
+    });
+    
+
+  async function loadProjects() {
+    const res = await fetch('/api/services');
+    const projects = await res.json();
+
+    const list = document.getElementById('projectList');
+    list.innerHTML = '';
+
+    projects.forEach(project => {
+      const item = document.createElement('li');
+      item.textContent = `${project.name} (${project.status})`;
+      list.appendChild(item);
+    });
+  }
+
+  window.onload = loadProjects; // Auto-run when page loads
+
+    
+  </script>
+
+
+    <script src="script.js" type="text/JavaScript"></script>
+
+</body>
+</html>
